@@ -5,13 +5,27 @@ import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
+import { Routes, RouterModule } from '@angular/router';
+import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
+
+//empty will go to products , ** if not defined also go to products.
+//define routes from most specific , the order is important.
+const routes : Routes = [
+{path : 'category/:id' , component: ProductListComponent},
+{path : 'category' , component: ProductListComponent},
+{path : 'products' , component: ProductListComponent},
+{path : '' ,redirectTo :'/products' , pathMatch:'full' },
+{path : '**' , redirectTo :'/products',pathMatch: 'full'},
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductCategoryMenuComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule
   ],
