@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
@@ -6,7 +7,7 @@ import { CartItem } from '../common/cart-item';
   providedIn: 'root'
 })
 export class CartServiceService {
-
+  
   cartItem : CartItem[] = [];
 
   //subject is a sub class of Observable , we can use it to publish events in our code 
@@ -80,6 +81,30 @@ this.totalQuantity.next(totalQuantityValue);
   console.log(`totalPrice : ${totalPriceValue.toFixed(2)} , totalQuantity:${totalQuantityValue}`);
   console.log(`----`);  
 }
+
+decrementQuantity(theCartItem: CartItem) {
+  theCartItem.quantity --;
+  if(theCartItem.quantity ==0)
+  {
+    this.remove(theCartItem);
+  }
+  else
+  {
+    this.computeCartTotals();
+  }
+
+}
+  remove(theCartItem: CartItem) {
+  //get index of the item from the array
+    const itemIndex = this.cartItem.findIndex(tempCartItem => tempCartItem.id === theCartItem.id);
+
+  //if found ,remove the item from the array at the given index.
+  if(itemIndex > -1 )
+  {
+    //splice will remove items from the list (,1 to remove only the first item from the given index)
+    this.cartItem.splice(itemIndex,1);
+  }
+  }
 
 
 }
